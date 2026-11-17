@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ead8d5">
+<title>Твой день рождения ✨</title>
+<style>
+:root{
+  --pink:#e7b7cc; --pink-light:#f8e5ed; --pink-dark:#b94f7d;
+  --wine:#743b58; --cream:#fffaf4; --gold:#c7a052;
+  --ink:#563044; --silver:#aeb2b8;
+}
+*{box-sizing:border-box}
+html{min-height:100%;scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;overflow-x:hidden;color:var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+  background:
+    radial-gradient(ellipse at 50% 30%,rgba(255,248,237,.94),transparent 52%),
+    radial-gradient(ellipse at 12% 82%,rgba(213,169,157,.75),transparent 48%),
+    radial-gradient(ellipse at 90% 18%,rgba(218,181,177,.8),transparent 48%),
+    linear-gradient(135deg,#b99b91,#ead5ca 48%,#c5a89d);
+}
+body:before{
+  content:"";position:fixed;inset:-35px;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 20%,rgba(255,247,216,.55),transparent 12%),
+    radial-gradient(circle at 82% 72%,rgba(255,233,211,.5),transparent 16%),
+    radial-gradient(circle at 52% 90%,rgba(255,255,255,.28),transparent 18%);
+  filter:blur(38px);
+}
+button{font:inherit}
+.screen{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:28px 14px}
+#birthdayScene{position:relative;transition:opacity 1s ease;overflow:hidden}
+.ambient-glow{position:absolute;width:min(70vw,700px);height:min(70vw,700px);border-radius:50%;background:rgba(255,243,214,.38);filter:blur(60px);pointer-events:none}
+.corner-decor{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+.balloon{position:absolute;width:66px;height:84px;border-radius:50% 50% 46% 46%;opacity:.78;
+  box-shadow:inset -10px -8px 14px rgba(90,40,60,.12),inset 9px 7px 14px rgba(255,255,255,.5),0 10px 18px rgba(80,45,40,.12);
+  animation:balloonFloat 5s ease-in-out infinite alternate}
+.balloon:before{content:"";position:absolute;width:2px;height:105px;background:rgba(100,65,65,.32);left:50%;top:82px}
+.balloon:after{content:"";position:absolute;bottom:-5px;left:calc(50% - 5px);border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid currentColor}
+.b1{left:4%;top:10%;background:#e8a8c1;color:#e8a8c1;transform:rotate(-12deg)}
+.b2{right:5%;top:13%;width:55px;height:72px;background:#f0d38c;color:#f0d38c;animation-delay:-2s}
+.b3{left:7%;bottom:12%;width:48px;height:65px;background:#b8d7cf;color:#b8d7cf;animation-delay:-1s}
+.b4{right:7%;bottom:14%;background:#d9a5b9;color:#d9a5b9;animation-delay:-3s}
+@keyframes balloonFloat{to{translate:0 -15px;rotate:5deg}}
+.corner-confetti{position:absolute;width:10px;height:20px;border-radius:2px;opacity:.8;animation:confettiDrift 5s ease-in-out infinite}
+@keyframes confettiDrift{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(22px) rotate(100deg)}}
+.streamer{position:absolute;width:100px;height:160px;border:3px solid rgba(185,79,125,.55);border-left:0;border-bottom:0;border-radius:0 70% 0 0;opacity:.65}
+.streamer.left{left:-35px;top:34%}
+.streamer.right{right:-35px;top:48%;transform:scaleX(-1)}
+.cake-wrap{position:relative;width:min(590px,96vw);height:510px;display:flex;align-items:center;justify-content:center;z-index:3}
+.cake{position:relative;width:550px;height:490px;max-width:100%;transform-origin:center bottom;filter:drop-shadow(0 18px 18px rgba(78,43,53,.16))}
+.plate{position:absolute;left:50%;bottom:7px;transform:translateX(-50%);width:98%;height:93px;border-radius:50%;
+ background:linear-gradient(180deg,#fffaf1 0%,#eadbd0 70%,#c8b2a8 100%);border:5px solid #fff5e9;box-shadow:0 12px 20px rgba(65,39,34,.2)}
+.tier{position:absolute;left:50%;transform:translateX(-50%);border-radius:10px 10px 22px 22px;
+ background:linear-gradient(90deg,#d69bb7 0%,#f7e1eb 24%,#f2d5e2 70%,#d99db9 100%);
+ box-shadow:inset 12px 0 18px rgba(255,255,255,.35),inset -12px 0 18px rgba(126,55,83,.12),0 7px 10px rgba(86,46,61,.12);
+ border-bottom:8px solid #c16a91}
+.tier:before{content:"";position:absolute;left:-2%;top:-16px;width:104%;height:34px;border-radius:50%;
+ background:linear-gradient(180deg,#fff9fb 0%,#f2d7e3 50%,#d889ad 100%);border-bottom:5px solid #bd5c86;
+ box-shadow:0 3px 5px rgba(112,51,77,.12)}
+.tier:after{content:"";position:absolute;left:2%;top:-9px;width:96%;height:15px;border-radius:50%;background:rgba(255,255,255,.55)}
+.tier-bottom{width:91%;height:174px;bottom:42px}
+.tier-middle{width:68%;height:124px;bottom:205px}
+.tier-top{width:46%;height:91px;bottom:322px}
+.icing-rope{position:absolute;left:2%;width:96%;height:20px;bottom:25px;border-top:6px solid #b84e7b;border-bottom:5px solid #b84e7b;border-radius:50%;transform:rotate(-1deg)}
+.icing-rope:after{content:"";position:absolute;left:0;right:0;top:-4px;height:7px;border-radius:50%;background:repeating-linear-gradient(110deg,transparent 0 8px,#e9a5c1 9px 14px,transparent 15px 22px)}
+.swag{position:absolute;left:7%;right:7%;bottom:73px;height:85px;border-bottom:7px solid #b94f7d;border-radius:0 0 50% 50%;filter:drop-shadow(0 2px 1px rgba(255,255,255,.6))}
+.swag:before,.swag:after{content:"";position:absolute;top:-3px;width:48%;height:54px;border-bottom:5px solid #cf7097;border-radius:0 0 50% 50%}
+.swag:before{left:0;transform:rotate(13deg)}.swag:after{right:0;transform:rotate(-13deg)}
+.flower{position:absolute;bottom:8px;font-size:30px;color:#8fc5c1;text-shadow:1px 2px 0 #fff}
+.flower.f1{left:12%}.flower.f2{right:12%}
+.candle-layer{position:absolute;inset:0;z-index:12;pointer-events:none}
+.candle{position:absolute;width:10px;height:46px;border-radius:4px 4px 2px 2px;
+ background:repeating-linear-gradient(0deg,#fffdfc 0 7px,#f2dce6 8px 11px);
+ border:1px solid rgba(214,170,188,.55);box-shadow:1px 2px 4px rgba(83,45,58,.2);
+ transform:translate(-50%,-100%);transform-origin:50% 100%}
+.candle:after{content:"";position:absolute;bottom:-3px;left:-3px;width:16px;height:5px;border-radius:50%;background:#fff9f4;box-shadow:0 1px 2px rgba(80,40,55,.2)}
+.flame{position:absolute;left:50%;top:-23px;width:12px;height:21px;transform:translateX(-50%);
+ border-radius:55% 45% 50% 50%;background:radial-gradient(ellipse at 50% 72%,#fffde0 0 16%,#ffe36a 35%,#ff9d2f 70%,rgba(255,130,30,0) 100%);
+ filter:drop-shadow(0 0 5px #ffbd43) drop-shadow(0 0 11px rgba(255,164,42,.55));
+ transform-origin:50% 100%;animation:flameDance var(--dur, .72s) ease-in-out var(--delay,0s) infinite alternate}
+.flame:after{content:"";position:absolute;left:4px;top:5px;width:4px;height:10px;border-radius:50%;background:#fff9cf;filter:blur(.5px)}
+@keyframes flameDance{
+  0%{transform:translateX(-50%) rotate(calc(var(--lean, 1)*-1deg)) scale(.97,.98)}
+  35%{transform:translateX(calc(-50% + .5px)) rotate(2deg) scale(1.02,1.04)}
+  70%{transform:translateX(calc(-50% - .5px)) rotate(-2deg) scale(.99,1.02)}
+  100%{transform:translateX(-50%) rotate(3deg) scale(1.03,.98)}
+}
+.candle.off .flame{animation:none;opacity:0;transform:translateX(-50%) scale(.2);transition:opacity .25s,transform .25s}
+.smoke{position:absolute;left:50%;top:-25px;width:8px;height:8px;transform:translateX(-50%);pointer-events:none}
+.smoke span{position:absolute;left:0;top:0;width:var(--size);height:var(--size);border-radius:50%;
+ background:radial-gradient(circle,rgba(115,111,111,.17) 0%,rgba(150,145,143,.13) 45%,rgba(180,175,170,0) 75%);
+ filter:blur(var(--blur));opacity:0;animation:smokeRise var(--smokeDur) ease-out var(--smokeDelay) both;animation-play-state:paused}
+.candle.off .smoke span{animation-play-state:running}
+@keyframes smokeRise{
+  0%{opacity:0;transform:translate(0,0) scale(.45)}
+  12%{opacity:.58}
+  45%{opacity:.38;transform:translate(var(--drift),-38px) scale(1.9)}
+  100%{opacity:0;transform:translate(calc(var(--drift)*2),-115px) scale(4.2)}
+}
+#birthdayScene.exploding .tier-top{animation:topBlast 1.3s cubic-bezier(.2,.7,.2,1) forwards}
+#birthdayScene.exploding .tier-middle{animation:midBlast 1.5s ease-in forwards}
+#birthdayScene.exploding .tier-bottom{animation:bottomBlast 1.65s ease-in forwards}
+#birthdayScene.exploding .plate{animation:plateBlast 1.4s ease-in forwards}
+@keyframes topBlast{to{transform:translate(-125%,-175%) rotate(-28deg);opacity:0}}
+@keyframes midBlast{to{transform:translate(80%,-115%) rotate(22deg);opacity:0}}
+@keyframes bottomBlast{to{transform:translate(-50%,145%) rotate(-9deg);opacity:0}}
+@keyframes plateBlast{to{transform:translate(-50%,180%) rotate(12deg);opacity:0}}
+#confettiLayer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:30}
+.confetti-piece{position:absolute;top:-24px;width:9px;height:16px;border-radius:2px;animation:confettiDrop var(--fall) cubic-bezier(.15,.65,.35,1) var(--wait) forwards}
+@keyframes confettiDrop{to{transform:translate3d(var(--x),110vh,0) rotate(var(--spin));opacity:.15}}
+#envelopeScene{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:50;opacity:0;visibility:hidden;transition:opacity .8s}
+#envelopeScene.visible{opacity:1;visibility:visible}
+.envelope{position:relative;width:270px;height:180px;cursor:pointer;opacity:0;transform:scale(.15) rotate(0deg);
+ background:linear-gradient(145deg,#e9a9c2,#d987a9);box-shadow:0 22px 45px rgba(83,40,59,.28);border-radius:4px}
+.envelope.enter{animation:envelopeFly 2.3s cubic-bezier(.18,.72,.2,1) forwards}
+@keyframes envelopeFly{0%{opacity:0;transform:scale(.15) rotate(0)}65%{opacity:1;transform:scale(1.28) rotate(390deg)}100%{opacity:1;transform:scale(1.12) rotate(360deg)}}
+.envelope:before{content:"";position:absolute;inset:0 0 auto;height:0;border-left:135px solid transparent;border-right:135px solid transparent;border-top:105px solid #f5cddd;transform-origin:top;transition:transform .7s;z-index:4}
+.envelope:after{content:"";position:absolute;left:0;right:0;bottom:0;height:0;border-left:135px solid transparent;border-right:135px solid transparent;border-bottom:105px solid #d77fa4;z-index:3}
+.envelope-seal{position:absolute;z-index:5;left:50%;top:53%;transform:translate(-50%,-50%);font-size:30px;color:#a94c74}
+.envelope.open:before{transform:rotateX(180deg)}
+.envelope.open{opacity:0;transition:opacity .6s .55s}
+.envelope-hint{position:absolute;top:calc(50% + 125px);font:11px Arial,sans-serif;letter-spacing:4px;color:#713d56}
+#couponsScene{display:none;min-height:100svh;padding:55px 14px 80px;align-items:center;flex-direction:column;gap:25px}
+#couponsScene.visible{display:flex}
+.coupon{position:relative;width:min(540px,94vw);min-height:174px;background:#fffdf9;overflow:hidden;
+ display:flex;flex-direction:column;box-shadow:0 10px 28px rgba(75,38,53,.18);
+ clip-path:polygon(0 0,100% 0,100% 40%,98.7% 44%,98.7% 56%,100% 60%,100% 100%,0 100%,0 60%,1.3% 56%,1.3% 44%,0 40%);
+ animation:couponIn .75s ease both;transition:filter .35s,opacity .35s}
+@keyframes couponIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.coupon-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 30px 17px}
+.coupon-label{font:700 11px Arial,sans-serif;letter-spacing:5px;color:#b45c80}
+.coupon-number{margin-top:8px;font:700 12px Arial,sans-serif;letter-spacing:3px;color:#b45c80}
+.coupon-title{margin-top:10px;font-size:clamp(21px,4.8vw,30px);font-weight:bold;text-transform:uppercase;color:#713d57}
+.coupon-description{margin-top:7px;font-size:15px;color:#875e71}
+.coupon-footer{padding:10px;background:#d98caf;color:white;text-align:center;font:700 9px Arial,sans-serif;letter-spacing:3px}
+.coupon.gold{background:linear-gradient(135deg,#fff4d5,#e8cd8e 52%,#fff1c8);box-shadow:0 12px 32px rgba(130,91,25,.25)}
+.coupon.gold .coupon-label,.coupon.gold .coupon-number{color:#98702e}
+.coupon.gold .coupon-title{color:#765321}
+.coupon.gold .coupon-description{color:#89672f}
+.coupon.gold .coupon-footer{background:#b9944b}
+.gold-bow{font-size:28px;margin-top:5px}
+.coupon.used{background:linear-gradient(135deg,#f0f1f2,#cdd1d5 55%,#e8e9eb);filter:grayscale(.75);box-shadow:0 6px 17px rgba(55,60,65,.13)}
+.coupon.used .coupon-label,.coupon.used .coupon-number,.coupon.used .coupon-title,.coupon.used .coupon-description{color:#737980}
+.coupon.used .coupon-footer{background:#9299a1;color:#fff}
+.coupon.used.gold{background:linear-gradient(135deg,#e7e8e9,#c4c8cc,#f0f0ef)}
+.coupon.used.gold .coupon-title,.coupon.used.gold .coupon-label,.coupon.used.gold .coupon-number,.coupon.used.gold .coupon-description{color:#747980}
+.coupon.used.gold .coupon-footer{background:#9299a1}
+.coupon-action{position:absolute;inset:0;z-index:5;border:0;background:transparent;cursor:pointer}
+.coupon:focus-within{outline:3px solid #a94d76;outline-offset:3px}
+.coupon-status{position:absolute;right:18px;top:13px;z-index:2;font:700 9px Arial,sans-serif;letter-spacing:1px;color:#737980;opacity:0}
+.coupon.used .coupon-status{opacity:1}
+#couponModal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(47,29,39,.48);backdrop-filter:blur(7px)}
+#couponModal.show{display:flex}
+.modal-card{width:min(390px,100%);padding:27px 23px;background:#fffaf5;border-radius:18px;text-align:center;box-shadow:0 20px 60px rgba(30,15,25,.28)}
+.modal-card h2{margin:0 0 10px;color:#793f5a;font-size:23px}
+.modal-card p{margin:0 0 22px;color:#795c69;line-height:1.5}
+.modal-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.modal-buttons button{border:0;border-radius:30px;padding:11px 18px;cursor:pointer;font:600 13px Arial,sans-serif}
+.confirm-btn{background:#bd668b;color:white}.cancel-btn{background:#eee5e8;color:#68475a}
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;z-index:120;
+ background:#674052;color:white;padding:11px 18px;border-radius:24px;font:13px Arial,sans-serif;transition:.3s;pointer-events:none}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:600px){
+ .screen{padding:10px 5px}
+ .cake-wrap{height:440px}
+ .cake{transform:scale(.78)}
+ .balloon{transform:scale(.7)}
+ .b1{left:-3%;top:8%}.b2{right:-3%;top:12%}.b3{left:-2%;bottom:8%}.b4{right:-3%;bottom:10%}
+ #couponsScene{padding-top:35px;gap:19px}
+ .coupon{min-height:165px}
+ .coupon-title{font-size:22px}
+ .envelope{width:245px;height:164px}
+ .envelope:before{border-left-width:122px;border-right-width:122px;border-top-width:96px}
+ .envelope:after{border-left-width:122px;border-right-width:122px;border-bottom-width:96px}
+}
+@media(max-width:390px){.cake{transform:scale(.68)}.cake-wrap{height:395px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+
+.countdown-panel{
+  position:absolute;z-index:8;left:50%;top:25px;transform:translateX(-50%);
+  width:min(440px,90vw);padding:13px 18px 12px;border:1px solid rgba(255,255,255,.72);
+  border-radius:18px;background:rgba(255,250,245,.58);backdrop-filter:blur(12px);
+  box-shadow:0 8px 28px rgba(86,46,61,.10);text-align:center;
+}
+.countdown-caption{font:700 9px Arial,sans-serif;letter-spacing:4px;color:#986078}
+.countdown-values{display:flex;justify-content:center;align-items:flex-start;gap:clamp(9px,3vw,23px);margin-top:8px}
+.countdown-unit{min-width:42px}
+.countdown-number{display:block;font:700 clamp(22px,5vw,31px) Arial,sans-serif;line-height:1.1;color:#793f5b;font-variant-numeric:tabular-nums}
+.countdown-name{display:block;margin-top:4px;font:9px Arial,sans-serif;letter-spacing:1.5px;color:#a77b8e}
+.countdown-note{margin-top:7px;font:10px Arial,sans-serif;letter-spacing:1px;color:#9c7586}
+.cake-wrap{margin-top:55px}
+@media(max-width:600px){
+ .countdown-panel{top:13px;padding:10px 12px;border-radius:14px}
+ .countdown-caption{font-size:8px;letter-spacing:2.5px}
+ .countdown-name{font-size:8px;letter-spacing:1px}
+ .cake-wrap{margin-top:50px}
+}
+
+.reset-coupons{margin:8px 0 0;padding:10px 16px;border:1px solid rgba(116,59,88,.28);border-radius:24px;background:rgba(255,250,245,.62);color:#86576d;font:12px Arial,sans-serif;cursor:pointer}
+.reset-coupons:hover{background:#fffaf4}
+@media(max-width:600px){.reset-coupons{font-size:11px;padding:9px 14px}}
+</style>
+</head>
+<body>
+
+<div class="corner-decor" id="cornerDecor" aria-hidden="true">
+  <div class="balloon b1"></div><div class="balloon b2"></div>
+  <div class="balloon b3"></div><div class="balloon b4"></div>
+  <div class="streamer left"></div><div class="streamer right"></div>
+</div>
+<div id="confettiLayer" aria-hidden="true"></div>
+
+<main id="birthdayScene" class="screen">
+  <div class="ambient-glow"></div>
+  <div class="countdown-panel" id="countdownPanel" aria-live="off">
+    <div class="countdown-caption">ДО ТВОЕГО ДНЯ</div>
+    <div class="countdown-values">
+      <div class="countdown-unit"><span class="countdown-number" id="cdDays">00</span><span class="countdown-name">ДНЕЙ</span></div>
+      <div class="countdown-unit"><span class="countdown-number" id="cdHours">00</span><span class="countdown-name">ЧАСОВ</span></div>
+      <div class="countdown-unit"><span class="countdown-number" id="cdMinutes">00</span><span class="countdown-name">МИНУТ</span></div>
+      <div class="countdown-unit"><span class="countdown-number" id="cdSeconds">00</span><span class="countdown-name">СЕКУНД</span></div>
+    </div>
+  </div>
+  <div class="cake-wrap">
+    <div class="cake" id="cake">
+      <div class="plate"></div>
+      <div class="tier tier-bottom"><div class="icing-rope"></div><div class="swag"></div><span class="flower f1">✿</span><span class="flower f2">✿</span></div>
+      <div class="tier tier-middle"><div class="icing-rope"></div></div>
+      <div class="tier tier-top"><div class="icing-rope"></div></div>
+      <div class="candle-layer" id="candleLayer"></div>
+    </div>
+  </div>
+</main>
+
+<div id="envelopeScene">
+  <div class="envelope" id="envelope"><span class="envelope-seal">♥</span></div>
+  <div class="envelope-hint" id="envelopeHint">НАЖМИ НА КОНВЕРТ</div>
+</div>
+
+<section id="couponsScene" aria-label="Подарочные купоны"></section>
+
+<div id="couponModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <h2 id="modalTitle">Использовать купон?</h2>
+    <p id="modalText">После подтверждения купон будет отмечен как использованный.</p>
+    <div class="modal-buttons">
+      <button class="cancel-btn" id="cancelUse">Пока нет</button>
+      <button class="confirm-btn" id="confirmUse">Да, использовать</button>
+    </div>
+  </div>
+</div>
+<div id="toast" role="status"></div>
+
+<script>
+/* ==========================================================
+   НАСТРОЙКИ ДЛЯ ПРОВЕРКИ И ПУБЛИКАЦИИ
+========================================================== */
+
+// РЕЖИМ ТЕСТА:
+// true  — используем тестовую дату ниже;
+// false — используем настоящее время по Москве.
+const TEST_MODE = false;
+
+// Для проверки отсчёта и автоматического запуска:
+// "2026-11-19T23:59:50"
+// Сайт начнёт отсчёт с этого момента и через 10 секунд
+// должен запустить праздничную анимацию.
+//
+// Для проверки уже открытых купонов:
+// "2026-11-20T12:00:00" и TEST_FORCE_ANIMATION = false.
+const TEST_NOW = "2026-11-17T17:18:00";
+
+// В тестовом режиме время идёт вперёд в реальном темпе,
+// начиная с TEST_NOW. Не нужно вручную менять секунды.
+const TEST_FORCE_ANIMATION = false;
+
+// Настоящий момент запуска: ровно полночь 20 ноября 2026 года
+// по московскому времени (UTC+3).
+const BIRTHDAY = "2026-11-20T00:00:00";
+const TIME_ZONE = "Europe/Moscow";
+const STORAGE_KEY = "birthdayGift_usedCoupons_v3";
+
+const testStartTimestamp = Date.now();
+const testBaseTimestamp = new Date(TEST_NOW + "+03:00").getTime();
+
+function getMoscowDateTime(){
+  if(TEST_MODE){
+    const simulated = new Date(testBaseTimestamp + (Date.now() - testStartTimestamp));
+    const parts = new Intl.DateTimeFormat("en-CA",{timeZone:TIME_ZONE,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"}).formatToParts(simulated);
+    const p={};parts.forEach(x=>p[x.type]=x.value);
+    return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`;
+  }
+  const parts = new Intl.DateTimeFormat("en-CA",{
+    timeZone:TIME_ZONE,year:"numeric",month:"2-digit",day:"2-digit",
+    hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"
+  }).formatToParts(new Date());
+  const p={}; parts.forEach(x=>p[x.type]=x.value);
+  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`;
+}
+function isBirthdayReached(){return getMoscowDateTime() >= BIRTHDAY;}
+
+function updateCountdown(){
+  const now = new Date(getMoscowDateTime() + "+03:00").getTime();
+  const target = new Date(BIRTHDAY + "+03:00").getTime();
+  const diff = Math.max(0, target-now);
+  const days = Math.floor(diff/86400000);
+  const hours = Math.floor((diff%86400000)/3600000);
+  const minutes = Math.floor((diff%3600000)/60000);
+  const seconds = Math.floor((diff%60000)/1000);
+  const put=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=String(value).padStart(2,"0");};
+  put("cdDays",days);put("cdHours",hours);put("cdMinutes",minutes);put("cdSeconds",seconds);
+  const panel=document.getElementById("countdownPanel");
+  if(panel)panel.style.display=diff===0?"none":"block";
+}
+
+/* ==========================================================
+   СВЕЧИ: 30 ШТУК НА ТРЁХ ЯРУСАХ
+========================================================== */
+
+const candleLayer=document.getElementById("candleLayer");
+const candlePositions=[
+  // Верхний ярус: 6 свечей
+  ...[[-17,-3],[-10,-10],[0,-13],[10,-10],[17,-3],[0,2]].map(([x,y])=>({x:50+x,y:18+y*.35})),
+  // Средний ярус: 10 свечей по видимой поверхности
+  ...[[-27,-3],[-22,-10],[-14,-15],[-5,-17],[5,-17],[14,-15],[22,-10],[27,-3],[-10,0],[10,0]].map(([x,y])=>({x:50+x,y:36+y*.28})),
+  // Нижний ярус: 14 свечей
+  ...[[-39,-2],[-34,-10],[-27,-16],[-19,-20],[-10,-23],[0,-24],[10,-23],[19,-20],[27,-16],[34,-10],[39,-2],[-18,0],[0,1],[18,0]].map(([x,y])=>({x:50+x,y:58+y*.18}))
+];
+
+function addSmoke(candle){
+  const smoke=document.createElement("div"); smoke.className="smoke";
+  // Много полупрозрачных дымных сфер разного размера и плотности.
+  for(let i=0;i<11;i++){
+    const puff=document.createElement("span");
+    const size=8+Math.random()*19;
+    puff.style.setProperty("--size",size+"px");
+    puff.style.setProperty("--blur",(3+Math.random()*7)+"px");
+    puff.style.setProperty("--drift",(-13+Math.random()*26)+"px");
+    puff.style.setProperty("--smokeDur",(4.2+Math.random()*2.4)+"s");
+    puff.style.setProperty("--smokeDelay",(Math.random()*1.1)+"s");
+    puff.style.left=(-7+Math.random()*14)+"px";
+    puff.style.top=(-3+Math.random()*8)+"px";
+    smoke.appendChild(puff);
+  }
+  candle.appendChild(smoke);
+}
+
+candlePositions.forEach((pos,i)=>{
+  const candle=document.createElement("div");
+  candle.className="candle";
+  candle.style.left=pos.x+"%";
+  candle.style.top=pos.y+"%";
+  candle.style.height=(38+Math.random()*12)+"px";
+  const flame=document.createElement("div"); flame.className="flame";
+  flame.style.setProperty("--dur",(0.58+Math.random()*.55)+"s");
+  flame.style.setProperty("--delay",(-Math.random()*1.4)+"s");
+  flame.style.setProperty("--lean",Math.random()*2);
+  candle.appendChild(flame);
+  addSmoke(candle);
+  candleLayer.appendChild(candle);
+});
+
+/* ==========================================================
+   КУПОНЫ И СОХРАНЕНИЕ ИХ СОСТОЯНИЯ
+========================================================== */
+
+const coupons=[
+ ["УСЛУГИ СТИЛИСТА","Причёска и макияж"],
+ ["МОЙ ГАРДЕРОБ","Неделю можешь брать мои вещи"],
+ ["ФОТОСЕССИЯ","Спонтанная фотосессия, и я не ною"],
+ ["ВКУСНЫЙ ВЕЧЕР","Пицца / роллы за мой счёт"],
+ ["МАССАЖ","30 минут"],
+ ["КУЛЬТУРНЫЙ ВЫХОД","Музей / Выставка на твой выбор"],
+ ["КОМПЛИМЕНТЫ","Каждый час в течение целого дня"],
+ ["СЮРПРИЗ","На моё усмотрение"],
+ ["МАЛЕНЬКАЯ МЕЧТА","Куплю тебе то, что ты давно хотела"],
+ ["ОБНИМАШКИ","Бессрочный"]
+];
+
+function readUsed(){
+  try{
+    const value=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch(e){return [];}
+}
+let usedCoupons=readUsed();
+let selectedCoupon=null;
+
+function saveUsed(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(usedCoupons));}
+  catch(e){showToast("Не удалось сохранить состояние в этом браузере.");}
+}
+
+function renderCoupons(){
+  const section=document.getElementById("couponsScene");
+  section.innerHTML="";
+  coupons.forEach(([title,description],i)=>{
+    const number=String(i+1).padStart(2,"0");
+    const used= i!==9 && usedCoupons.includes(i);
+    const card=document.createElement("article");
+    card.className="coupon"+(i===9?" gold":"")+(used?" used":"");
+    card.style.animationDelay=(i*.09)+"s";
+    card.innerHTML=`
+      <span class="coupon-status">ИСПОЛЬЗОВАН</span>
+      <div class="coupon-main">
+        <div class="coupon-label">К У П О Н</div>
+        <div class="coupon-number">№ ${number}</div>
+        <div class="coupon-title"></div>
+        <div class="coupon-description"></div>
+        ${i===9?'<div class="gold-bow">🎀</div>':""}
+      </div>
+      <div class="coupon-footer">${i===9?"БЕССРОЧНЫЙ":(used?"ИСПОЛЬЗОВАН":"BIRTHDAY COUPON")}</div>
+      <button class="coupon-action" type="button" aria-label="${used?"Купон уже использован":"Использовать купон № "+number}"></button>
+    `;
+    card.querySelector(".coupon-title").textContent=title;
+    card.querySelector(".coupon-description").textContent=description;
+    const button=card.querySelector(".coupon-action");
+    button.addEventListener("click",()=>openCouponDialog(i));
+    if(used) button.disabled=true;
+    section.appendChild(card);
+  });
+  const reset=document.createElement("button");
+  reset.type="button";reset.className="reset-coupons";reset.textContent="Сбросить отметки об использовании";
+  reset.addEventListener("click",()=>{
+    if(!confirm("Сбросить все отметки? Все обычные купоны снова станут активными."))return;
+    usedCoupons=[];saveUsed();renderCoupons();showToast("Отметки сброшены");
+  });
+  section.appendChild(reset);
+}
+
+function openCouponDialog(index){
+  if(index!==9 && usedCoupons.includes(index))return;
+  selectedCoupon=index;
+  const [title,description]=coupons[index];
+  document.getElementById("modalTitle").textContent="Использовать купон № "+String(index+1).padStart(2,"0")+"?";
+  document.getElementById("modalText").textContent=index===9
+    ? title+" — "+description+". Этот купон бессрочный: он всегда останется золотым и доступным."
+    : title+" — "+description+". После подтверждения билет станет серебристым.";
+  document.getElementById("couponModal").classList.add("show");
+}
+function closeCouponDialog(){
+  document.getElementById("couponModal").classList.remove("show");
+  selectedCoupon=null;
+}
+document.getElementById("cancelUse").addEventListener("click",closeCouponDialog);
+document.getElementById("confirmUse").addEventListener("click",()=>{
+  if(selectedCoupon===null)return;
+  const wasGold = selectedCoupon===9;
+  if(!wasGold && !usedCoupons.includes(selectedCoupon)){
+    usedCoupons.push(selectedCoupon);
+    saveUsed();
+  }
+  closeCouponDialog();
+  renderCoupons();
+  showToast(wasGold ? "Бессрочный купон всегда остаётся активным ♥" : "Купон отмечен как использованный");
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")closeCouponDialog();
+});
+document.getElementById("couponModal").addEventListener("click",e=>{
+  if(e.target.id==="couponModal")closeCouponDialog();
+});
+function showToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),2300);
+}
+
+/* ==========================================================
+   КОНФЕТТИ
+========================================================== */
+
+function launchConfetti(){
+  const layer=document.getElementById("confettiLayer");
+  const colors=["#f3b6cf","#fff8ec","#d889ad","#e9ca7e","#a9d2c9","#bd668b","#f6dce7"];
+  for(let i=0;i<190;i++){
+    const piece=document.createElement("i");
+    piece.className="confetti-piece";
+    piece.style.left=(Math.random()*100)+"vw";
+    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+    piece.style.setProperty("--x",(-90+Math.random()*180)+"px");
+    piece.style.setProperty("--spin",(360+Math.random()*1100)+"deg");
+    piece.style.setProperty("--fall",(3.5+Math.random()*3)+"s");
+    piece.style.setProperty("--wait",(Math.random()*1.5)+"s");
+    piece.style.width=(5+Math.random()*8)+"px";
+    piece.style.height=(9+Math.random()*13)+"px";
+    layer.appendChild(piece);
+    setTimeout(()=>piece.remove(),7500);
+  }
+}
+
+/* ==========================================================
+   ПОСЛЕДОВАТЕЛЬНОСТЬ ПРАЗДНИЧНОЙ АНИМАЦИИ
+========================================================== */
+
+let animationStarted=false;
+function extinguishCandles(){
+  const candles=[...document.querySelectorAll(".candle")];
+  // Пламя гаснет волнами: примерно 6–7 секунд на всю группу.
+  candles.forEach((candle,index)=>{
+    const delay=index*190+Math.random()*260;
+    setTimeout(()=>candle.classList.add("off"),delay);
+  });
+  return 29*190+520;
+}
+
+function showEnvelope(){
+  const scene=document.getElementById("envelopeScene");
+  const envelope=document.getElementById("envelope");
+  scene.classList.add("visible");
+  setTimeout(()=>envelope.classList.add("enter"),100);
+}
+function startBirthdayAnimation(){
+  if(animationStarted)return;
+  animationStarted=true;
+  const scene=document.getElementById("birthdayScene");
+  const candleDuration=extinguishCandles();
+  // Дым успевает проявиться после того, как погаснет последняя свеча.
+  setTimeout(()=>{
+    launchConfetti();
+    scene.classList.add("exploding");
+  },candleDuration+1800);
+  setTimeout(()=>{
+    scene.style.opacity="0";
+  },candleDuration+2200);
+  setTimeout(()=>{
+    scene.style.display="none";
+    showEnvelope();
+  },candleDuration+3300);
+}
+
+document.getElementById("envelope").addEventListener("click",()=>{
+  const envelope=document.getElementById("envelope");
+  if(envelope.classList.contains("open"))return;
+  envelope.classList.add("open");
+  document.getElementById("envelopeHint").style.display="none";
+  setTimeout(()=>{
+    document.getElementById("envelopeScene").style.display="none";
+    renderCoupons();
+    document.getElementById("couponsScene").classList.add("visible");
+  },1150);
+});
+
+/* ==========================================================
+   СТАРТОВАЯ ЛОГИКА
+========================================================== */
+
+function showCouponListDirectly(){
+  document.getElementById("birthdayScene").style.display="none";
+  document.getElementById("cornerDecor").style.display="none";
+  renderCoupons();
+  document.getElementById("couponsScene").classList.add("visible");
+}
+
+function checkBirthday(){
+  if(!isBirthdayReached())return;
+  // Страница уже была открыта до полуночи: показываем всю анимацию.
+  startBirthdayAnimation();
+}
+
+// До даты — торт и свечи.
+// В момент полуночи на открытой странице — анимация.
+// Если открыть сайт позже — сразу готовая коллекция купонов.
+updateCountdown();
+if(isBirthdayReached()){
+  if(TEST_MODE && TEST_FORCE_ANIMATION) startBirthdayAnimation();
+  else showCouponListDirectly();
+}else{
+  setInterval(checkBirthday,1000);
+  setInterval(updateCountdown,1000);
+}
+</script>
+</body>
+</html>
